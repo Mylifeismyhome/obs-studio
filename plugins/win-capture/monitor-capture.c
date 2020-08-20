@@ -1,5 +1,6 @@
 #include <util/dstr.h>
 #include "dc-capture.h"
+#include "Sapphire_Export.h"
 
 /* clang-format off */
 
@@ -45,8 +46,7 @@ static inline void do_log(int level, const char *msg, ...)
 	va_end(args);
 }
 
-static BOOL CALLBACK enum_monitor(HMONITOR handle, HDC hdc, LPRECT rect,
-				  LPARAM param)
+BOOL CALLBACK enum_monitor(HMONITOR handle, HDC hdc, LPRECT rect, LPARAM param)
 {
 	struct monitor_info *monitor = (struct monitor_info *)param;
 
@@ -60,8 +60,7 @@ static BOOL CALLBACK enum_monitor(HMONITOR handle, HDC hdc, LPRECT rect,
 	return (monitor->desired_id > monitor->cur_id++);
 }
 
-static void update_monitor(struct monitor_capture *capture,
-			   obs_data_t *settings)
+void update_monitor(struct monitor_capture *capture, obs_data_t *settings)
 {
 	struct monitor_info monitor = {0};
 	uint32_t width, height;
@@ -92,13 +91,13 @@ static inline void update_settings(struct monitor_capture *capture,
 
 /* ------------------------------------------------------------------------- */
 
-static const char *monitor_capture_getname(void *unused)
+const char *monitor_capture_getname(void *unused)
 {
 	UNUSED_PARAMETER(unused);
 	return TEXT_MONITOR_CAPTURE;
 }
 
-static void monitor_capture_destroy(void *data)
+void monitor_capture_destroy(void *data)
 {
 	struct monitor_capture *capture = data;
 
@@ -109,20 +108,20 @@ static void monitor_capture_destroy(void *data)
 	bfree(capture);
 }
 
-static void monitor_capture_defaults(obs_data_t *settings)
+void monitor_capture_defaults(obs_data_t *settings)
 {
 	obs_data_set_default_int(settings, "monitor", 0);
 	obs_data_set_default_bool(settings, "capture_cursor", true);
 	obs_data_set_default_bool(settings, "compatibility", false);
 }
 
-static void monitor_capture_update(void *data, obs_data_t *settings)
+void monitor_capture_update(void *data, obs_data_t *settings)
 {
 	struct monitor_capture *mc = data;
 	update_settings(mc, settings);
 }
 
-static void *monitor_capture_create(obs_data_t *settings, obs_source_t *source)
+void *monitor_capture_create(obs_data_t *settings, obs_source_t *source)
 {
 	struct monitor_capture *capture;
 
@@ -134,7 +133,7 @@ static void *monitor_capture_create(obs_data_t *settings, obs_source_t *source)
 	return capture;
 }
 
-static void monitor_capture_tick(void *data, float seconds)
+void monitor_capture_tick(void *data, float seconds)
 {
 	struct monitor_capture *capture = data;
 
@@ -148,7 +147,7 @@ static void monitor_capture_tick(void *data, float seconds)
 	UNUSED_PARAMETER(seconds);
 }
 
-static void monitor_capture_render(void *data, gs_effect_t *effect)
+void monitor_capture_render(void *data, gs_effect_t *effect)
 {
 	struct monitor_capture *capture = data;
 	dc_capture_render(&capture->data,
@@ -157,20 +156,20 @@ static void monitor_capture_render(void *data, gs_effect_t *effect)
 	UNUSED_PARAMETER(effect);
 }
 
-static uint32_t monitor_capture_width(void *data)
+uint32_t monitor_capture_width(void *data)
 {
 	struct monitor_capture *capture = data;
 	return capture->data.width;
 }
 
-static uint32_t monitor_capture_height(void *data)
+uint32_t monitor_capture_height(void *data)
 {
 	struct monitor_capture *capture = data;
 	return capture->data.height;
 }
 
-static BOOL CALLBACK enum_monitor_props(HMONITOR handle, HDC hdc, LPRECT rect,
-					LPARAM param)
+BOOL CALLBACK enum_monitor_props(HMONITOR handle, HDC hdc, LPRECT rect,
+				 LPARAM param)
 {
 	UNUSED_PARAMETER(hdc);
 	UNUSED_PARAMETER(rect);
@@ -210,7 +209,7 @@ static BOOL CALLBACK enum_monitor_props(HMONITOR handle, HDC hdc, LPRECT rect,
 	return TRUE;
 }
 
-static obs_properties_t *monitor_capture_properties(void *unused)
+obs_properties_t *monitor_capture_properties(void *unused)
 {
 	UNUSED_PARAMETER(unused);
 

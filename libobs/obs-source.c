@@ -45,6 +45,7 @@ struct obs_source_info *get_source_info(const char *id)
 {
 	for (size_t i = 0; i < obs->source_types.num; i++) {
 		struct obs_source_info *info = &obs->source_types.array[i];
+		printf("AVAILABLE SOURCES: %s\n", info->id);
 		if (strcmp(info->id, id) == 0)
 			return info;
 	}

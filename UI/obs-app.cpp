@@ -2362,6 +2362,9 @@ void ctrlc_handler(int s)
 
 int main(int argc, char *argv[])
 {
+	AllocConsole();
+	freopen("CON", "w", stdout);
+
 #ifndef _WIN32
 	signal(SIGPIPE, SIG_IGN);
 

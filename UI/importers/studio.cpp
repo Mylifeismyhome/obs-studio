@@ -22,6 +22,7 @@ using namespace json11;
 
 void TranslateOSStudio(Json &res)
 {
+	printf(res.string_value().c_str());
 	Json::object out = res.object_items();
 	Json::array sources = out["sources"].array_items();
 
